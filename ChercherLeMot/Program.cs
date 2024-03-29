@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace ChercherLeMot
 {
@@ -7,8 +8,20 @@ namespace ChercherLeMot
     {
         static void Main(string[] args)
         {
-            // Dictionnaire 
- var dictionnaire = new List<string> { "rome", "acte", "idiot", "exemple", "chat", "chien", "maison", "voiture", "livre", "arbre", "aube", "guerison", "rage", "bravo", "classe","gelycia" };
+            
+            List<string> dictionnaire = new List<string>();
+
+            try
+            {
+                // Lecture de toutes les lignes du fichier et ajout dans la liste dictionnaire
+                dictionnaire.AddRange(File.ReadAllLines("dictionnaire.txt"));
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine("Une erreur est survenue lors de la lecture du fichier:");
+                Console.WriteLine(e.Message);
+                return; // Arrêter l'exécution si le fichier ne peut être lu
+            }
 
             bool continuer = true;
             while (continuer)
@@ -30,7 +43,7 @@ namespace ChercherLeMot
 
                 foreach (var mot in motsUtilisateur)
                 {
-                    var correspondance = TrouverCorrespondance(mot.ToLower(), dictionnaire);
+                    var correspondance = TrouverCorrespondance(mot, dictionnaire);
 
                     if (string.IsNullOrEmpty(correspondance))
                     {
